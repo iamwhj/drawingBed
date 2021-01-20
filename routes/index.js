@@ -4,6 +4,7 @@ const koaBody = require('koa-body')
 
 const router = new Router()
 
+// 白名单IP列表
 let whiteIp = ['127.0.0.1']
 
 router.use(async (ctx, next) => {
