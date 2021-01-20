@@ -22,6 +22,6 @@ app.use(staticCache({
 
 app.use(indexRouter.routes(), indexRouter.allowedMethods())
 
-app.listen(3000, '0.0.0.0', () => {
+app.listen(3000, () => {
     console.log('KoaServer listen to 3000');
 })
