@@ -1,17 +1,9 @@
 const Koa = require('koa')
 const staticCache = require('koa-static-cache')
-const koaBody = require('koa-body')
 const indexRouter = require('./routes/index')
 
 const app = new Koa()
 
-app.use(koaBody({
-    multipart: true,
-    formidable: {
-        uploadDir: './static/images',
-        keepExtensions: true
-    }
-}))
 
 app.use(staticCache({
     prefix: '/public',
@@ -28,11 +20,8 @@ app.use(staticCache({
 }))
 
 
-
-
-
 app.use(indexRouter.routes(), indexRouter.allowedMethods())
 
-app.listen(3000, () => {
+app.listen(3000, '0.0.0.0', () => {
     console.log('KoaServer listen to 3000');
 })
