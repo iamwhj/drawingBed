@@ -24,6 +24,11 @@ router.use(async (ctx, next) => {
     
 })
 
+router.get('/', ctx => {
+    // 重定向
+    ctx.redirect('/public/index.html')
+})
+
 router.post('/upload', koaBody({
     multipart: true,
     formidable: {
