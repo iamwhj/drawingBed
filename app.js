@@ -19,6 +19,12 @@ app.use(staticCache({
     dynamic: true
 }))
 
+app.use(staticCache({
+  prefix: '/video',
+  dir: './static/video',
+  gzip: true,
+  dynamic: true
+}))
 
 app.use(indexRouter.routes(), indexRouter.allowedMethods())
 
