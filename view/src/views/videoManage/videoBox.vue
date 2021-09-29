@@ -15,6 +15,10 @@
         <template #tip>
           <div class="el-upload__tip" style="width: 400px" v-show="showProgress">
             <el-progress :percentage="percentage" :color="customColors" />
+            <div style="position: absolute; left: 430px; top: 310px">
+              <el-button type="danger" size="mini" v-if="!abort" @click="pauseSend">暂停</el-button>
+              <el-button type="success" size="mini" v-else @click="keepSend">继续</el-button>
+            </div>
           </div>
         </template>
       </el-upload>
@@ -82,7 +86,7 @@ const deleteImg = () => {
   })
 }
 
-const { changeFile, customColors, percentage, showProgress } = useBigFileUpload(getVideoList)
+const { changeFile, customColors, percentage, showProgress, abort, pauseSend, keepSend } = useBigFileUpload(getVideoList)
 </script>
 
 <style lang="scss" scoped>

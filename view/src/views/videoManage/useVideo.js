@@ -129,6 +129,7 @@ export function useDelImg() {
 
 export function useBigFileUpload(flushList) {
   const showProgress = ref(false)
+  const abort = ref(false)
   const percentage = ref(0)
   const customColors = ref([
     { color: '#f56c6c', percentage: 20 },
@@ -139,8 +140,10 @@ export function useBigFileUpload(flushList) {
   ])
 
   let partList = [],
-      suffix = '';
-  // 切片上传
+      suffix = '',
+      currentCnt = 0;
+
+  // 文件切片
   const changeFile = (fileObj) => {
     const file = fileObj.raw,
       chunkSize = 2097152, // 每片2M
@@ -194,24 +197,29 @@ export function useBigFileUpload(flushList) {
     loadNext()
   }
 
-  const sendSection = () => {
-    const allTask = []
-    let currentCnt = 0
+  // 开始发送分片
+  const sendSection = async () => {
     console.time('send time')
-    partList.forEach(item => {
-      const formData = new FormData()
-      formData.append('name', item.name)
-      formData.append('chunk', new Blob([item.chunk]))
-      allTask.push(new Promise((resolve, reject) => {
-        axios.post('/base/section', formData)
-        .then(res => {
-          currentCnt++
-          percentage.value = ~~(currentCnt / partList.length * 100)
-          resolve()
+    for (let i = currentCnt; i < partList.length; i++) {
+      if (!abort.value) {
+        const formData = new FormData()
+        formData.append('name', partList[i].name)
+        formData.append('chunk', new Blob([partList[i].chunk]))
+        await new Promise((resolve, reject) => {
+          axios.post('/base/section', formData)
+          .then(res => {
+            currentCnt++
+            percentage.value = ~~(currentCnt / partList.length * 100)
+            resolve()
+          })
         })
-      }))
-    })
-    Promise.all(allTask).then(res => {
+      } else {
+        // 点击暂停
+        break;
+      }
+    }
+    if (currentCnt === partList.length) {
+      // 发送完成
       axios.get('/base/merge').then(result => {
         let res = result.data
         if (res.code === 0) {
@@ -219,18 +227,29 @@ export function useBigFileUpload(flushList) {
           setTimeout(() => {
             flushList()
             showProgress.value = false
+            currentCnt = 0
           }, 3000)
         }
       })
       console.timeEnd('send time')
-    })
+    }
   }
 
-  
+  // 断点续传
+  const pauseSend =  () => {
+    abort.value = true
+  }
+  const keepSend = () => {
+    abort.value = false
+    sendSection()
+  }
   return {
     changeFile,
     percentage,
     customColors,
-    showProgress
+    showProgress,
+    abort,
+    pauseSend,
+    keepSend
   }
 }
