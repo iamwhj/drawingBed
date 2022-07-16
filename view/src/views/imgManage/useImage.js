@@ -58,8 +58,9 @@ export function useClickImg() {
       }
     } else {
       // 复制图片名
+      const imgPrefixPath = process.env.VUE_APP_IMAGE_PREFIX;
       const copyInp = document.createElement('input')
-      copyInp.setAttribute('value', imgName)
+      copyInp.setAttribute('value', imgPrefixPath + imgName)
       app.appendChild(copyInp)
       copyInp.select()
 			const copyed = document.execCommand("Copy")

@@ -4,15 +4,31 @@
 
 # 本地运行
 
-- npm install 
+1. 前端启动(做了ip白名单限制上传，默认放行127.0.0.1)
 
-- npm start
+```bash
+cd view
 
-- 访问 http://localhost:3000/public/index.html
+npm i
+
+npm run dev
+
+访问： http://127.0.0.1:8080/
+```
+
+2. 后端启动
+
+```bash
+npm i
+
+npm run start
+```
 
 # 使用
 
-点击图片复制图片名。点击批量删除，选择图片点击确定进行删除。
+1. 图片路径：点击图片，复制图片路径，vite配置文件中配置图片路径前缀
+
+2. 批量删除：选中图片批量删除
 
 # 安全
 
