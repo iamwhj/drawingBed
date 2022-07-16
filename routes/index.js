@@ -37,7 +37,7 @@ router.use(async (ctx, next) => {
 })
 
 router.get('/', ctx => {
-    // 重定向
+    // 重定向(接口作废)
     ctx.redirect('/public/index.html')
 })
 
@@ -48,8 +48,13 @@ router.post('/uploadImage', koaBody({
       keepExtensions: true,
     }
 }), async ctx => {
+    const devicePath = ctx.request.files.file.path;
+    const ripeImgName = devicePath.match(/upload_(.+)/g)[0];
+    const { serve_address, port } = process.env;
+    const ripeImgPath = `${serve_address}:${port}/image/${ripeImgName}`
     ctx.body = {
       code: 0,
+      imgUrl: ripeImgPath,
       message: '上传成功'
     }
 })  

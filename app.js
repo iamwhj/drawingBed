@@ -1,6 +1,8 @@
 const Koa = require('koa')
 const staticCache = require('koa-static-cache')
 const indexRouter = require('./routes/index')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const app = new Koa()
 
@@ -28,6 +30,6 @@ app.use(staticCache({
 
 app.use(indexRouter.routes(), indexRouter.allowedMethods())
 
-app.listen(8081, '0.0.0.0', () => {
-    console.log('KoaServer listen to 8081');
+app.listen(process.env.port, '0.0.0.0', () => {
+    console.log('KoaServer listen to ' + process.env.port);
 })

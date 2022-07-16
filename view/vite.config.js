@@ -5,7 +5,7 @@ import styleImport from 'vite-plugin-style-import'
 
 const resolve = dir => path.join(__dirname, dir)
 
-const remote = 'http://localhost:8081'
+const remote = 'http://localhost:3301'
 
 // https://vitejs.dev/config/
 export default defineConfig({
