@@ -9,7 +9,7 @@ const remote = 'http://localhost:3301'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/',
+  base: './',
   define: {
     'process.env': {
       'VUE_APP_IMAGE_PREFIX': 'http://127.0.0.1:8080/image/'
@@ -75,5 +75,10 @@ export default defineConfig({
 
   build: {
     // mode: 'production'
+    // rollupOptions: {
+    //   external: [
+    //     'element-plus'
+    //   ]
+    // }
   }
 })

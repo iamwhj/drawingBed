@@ -25,15 +25,19 @@ router.use(async (ctx, next) => {
     !fs.existsSync(videoFolder) ? fs.mkdirSync(videoFolder) : ''
 
     // 白名单内才能执行上传、删除
-    if(ctx.url === '/upload' || ctx.url === '/deleteImg') {
-        console.log('请求接口')
+    const checkRoute = ['/base/uploadImage', '/base/deleteImg']
+    if(checkRoute.includes(ctx.url)) {
         if(whiteIp.find(item => item === ip)) {
             await next()
+        } else {
+            ctx.body = {
+              code: 403,
+              message: '无权限上传图片，请联系管理员进行IP开通！'
+            }
         }
     } else {
         await next()
     }
-    
 })
 
 router.get('/', ctx => {

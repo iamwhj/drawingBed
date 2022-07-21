@@ -1,11 +1,13 @@
 const Koa = require('koa')
 const staticCache = require('koa-static-cache')
 const indexRouter = require('./routes/index')
+const cors = require('koa-cors')
 const dotenv = require('dotenv')
 dotenv.config()
 
 const app = new Koa()
 
+app.use(cors())
 
 app.use(staticCache({
     prefix: '/public',
